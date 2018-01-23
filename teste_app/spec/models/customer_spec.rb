@@ -43,6 +43,28 @@ RSpec.describe Customer, type: :model do
   	expect(customer.vip).to eq(true)
   end
 
+  it '#travel' do
+    puts "Time Current: #{Time.zone.now}"
+    travel 1.month do 
+      puts "Time Travel: #{Time.zone.now}"
+    end
+  end
+
+  it '#travel_to' do
+    puts "Time Current: #{Time.zone.now}"
+    travel_to Time.zone.local(2019, 11, 24, 01, 04, 44) do
+      puts "Time Travel: #{Time.zone.now}"
+    end
+  end
+
+  it 'travel_to with customer' do
+    travel_to Time.zone.local(2019, 11, 24, 01, 04, 44) do
+      @customer = create(:customer_vip)
+    end
+
+    expect(@customer.created_at.year).to eq(2019)
+  end
+
   it {expect{ create(:customer) }.to change{Customer.all.size}.by(1)}
 
 
